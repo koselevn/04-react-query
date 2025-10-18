@@ -8,20 +8,19 @@ interface MovieResponse {
   total_results: number;
 }
 
-export async function fetchMovies(query: string): Promise<Movie[]> {
+export async function fetchMovies(query: string, page: number): Promise<MovieResponse> {
   const url = 'https://api.themoviedb.org/3/search/movie';
-  const options = {
-      method: 'GET',
-      headers: {
-        accept: 'application/json',
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`
-      },
-      params: {
-        query: query
-      }
-  }
-  
-  const response = await axios.get<MovieResponse>(url, options)
 
-  return response.data.results;
+  const response = await axios.get<MovieResponse>(url, {
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
+    },
+    params: {
+      query: query,
+      page: page,
+    },
+  });
+
+  return response.data;
 }
