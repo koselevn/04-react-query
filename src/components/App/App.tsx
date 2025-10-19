@@ -9,7 +9,7 @@ import Loader from '../Loader/Loader';
 import MovieModal from '../MovieModal/MovieModal';
 import type { Movie } from '../../types/movie';
 import { fetchMovies } from '../../services/movieService';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 
 const notify = () => toast('No movies found for your request.');
 
@@ -22,6 +22,7 @@ export default function App() {
     queryKey: ['movies', query, currentPage],
     queryFn: () => fetchMovies(query, currentPage),
     enabled: !!query,
+    placeholderData: keepPreviousData,
   });
 
   useEffect(() => {
